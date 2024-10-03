@@ -47,18 +47,27 @@ class SelectorButton extends StatelessWidget {
     return selectorConfig.selectorType == PhoneInputSelectorType.DROPDOWN
         ? countries.isNotEmpty && countries.length > 1
             ? DropdownButtonHideUnderline(
-                child: DropdownButton<Country>(
-                  key: Key(TestHelper.DropdownButtonKeyValue),
-                  padding: EdgeInsets.only(left: 12),
-                  hint: Item(
-                    country: country,
-                    useEmoji: selectorConfig.useEmoji,
-                    trailingSpace: selectorConfig.trailingSpace,
-                    textStyle: selectorTextStyle,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: backgroundColor ?? Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: borderColor ?? Colors.transparent,
+                    ),
                   ),
-                  value: country,
-                  items: mapCountryToDropdownItem(countries),
-                  onChanged: isEnabled ? onCountryChanged : null,
+                  child: DropdownButton<Country>(
+                    key: Key(TestHelper.DropdownButtonKeyValue),
+                    padding: EdgeInsets.only(left: 12),
+                    hint: Item(
+                      country: country,
+                      useEmoji: selectorConfig.useEmoji,
+                      trailingSpace: selectorConfig.trailingSpace,
+                      textStyle: selectorTextStyle,
+                    ),
+                    value: country,
+                    items: mapCountryToDropdownItem(countries),
+                    onChanged: isEnabled ? onCountryChanged : null,
+                  ),
                 ),
               )
             : Item(
