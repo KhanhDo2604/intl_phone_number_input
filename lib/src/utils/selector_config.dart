@@ -46,4 +46,28 @@ class SelectorConfig {
     this.trailingSpace = true,
     this.useBottomSheetSafeArea = false,
   });
+
+  SelectorConfig copyWith({
+    PhoneInputSelectorType? selectorType,
+    bool? showFlags,
+    bool? useEmoji,
+    CountryComparator? countryComparator,
+    bool? setSelectorButtonAsPrefixIcon,
+    double? leadingPadding,
+    bool? trailingSpace,
+    bool? useBottomSheetSafeArea,
+  }) {
+    return SelectorConfig(
+      selectorType: selectorType ?? this.selectorType,
+      showFlags: showFlags ?? this.showFlags,
+      useEmoji: useEmoji ?? this.useEmoji,
+      countryComparator: countryComparator ?? this.countryComparator,
+      setSelectorButtonAsPrefixIcon:
+          setSelectorButtonAsPrefixIcon ?? this.setSelectorButtonAsPrefixIcon,
+      leadingPadding: leadingPadding ?? this.leadingPadding,
+      trailingSpace: trailingSpace ?? this.trailingSpace,
+      useBottomSheetSafeArea:
+          useBottomSheetSafeArea ?? this.useBottomSheetSafeArea,
+    );
+  }
 }

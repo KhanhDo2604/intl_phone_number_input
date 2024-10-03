@@ -85,6 +85,8 @@ class InternationalPhoneNumberInput extends StatefulWidget {
   final double? borderRadius;
   final Color? borderColor;
   final Color? fillColor;
+  final PhoneInputSelectorType? selectorType;
+  final Widget? dropdownIcon;
 
   final FocusNode? focusNode;
   final Iterable<String>? autofillHints;
@@ -93,7 +95,9 @@ class InternationalPhoneNumberInput extends StatefulWidget {
 
   InternationalPhoneNumberInput(
       {Key? key,
-      this.selectorConfig = const SelectorConfig(),
+      this.selectorConfig = const SelectorConfig(
+        selectorType: PhoneInputSelectorType.DROPDOWN,
+      ),
       required this.onInputChanged,
       this.onInputValidated,
       this.onSubmit,
@@ -133,6 +137,8 @@ class InternationalPhoneNumberInput extends StatefulWidget {
       this.borderRadius,
       this.borderColor = Colors.grey,
       this.fillColor,
+      this.selectorType = PhoneInputSelectorType.DROPDOWN,
+      this.dropdownIcon,
       this.countries})
       : super(key: key);
 
@@ -291,48 +297,6 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
     return null;
   }
 
-  /// Creates or Select [InputDecoration]
-  InputDecoration getInputDecoration(InputDecoration? decoration) {
-    InputDecoration value = decoration ??
-        InputDecoration(
-          filled: true,
-          fillColor: widget.fillColor ?? Colors.grey,
-          border: widget.inputBorder ??
-              OutlineInputBorder(
-                borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.0),
-                borderSide: BorderSide(
-                  color: widget.borderColor ?? Colors.grey,
-                ),
-              ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.0),
-            borderSide: BorderSide(
-              color: widget.borderColor ?? Colors.grey,
-            ),
-          ),
-          hintText: widget.hintText,
-          hintStyle: widget.hintStyle,
-        );
-
-    if (widget.selectorConfig.setSelectorButtonAsPrefixIcon) {
-      return value.copyWith(
-          prefixIcon: SelectorButton(
-        country: country,
-        countries: countries,
-        onCountryChanged: onCountryChanged,
-        selectorConfig: widget.selectorConfig,
-        selectorTextStyle: widget.selectorTextStyle,
-        searchBoxDecoration: widget.searchBoxDecoration,
-        locale: locale,
-        isEnabled: widget.isEnabled,
-        autoFocusSearchField: widget.autoFocusSearch,
-        isScrollControlled: widget.countrySelectorScrollControlled,
-      ));
-    }
-
-    return value;
-  }
-
   /// Validate the phone number when a change occurs
   void onChanged(String value) {
     phoneNumberControllerListener();
@@ -427,7 +391,12 @@ class _InputWidgetView
                   country: state.country,
                   countries: state.countries,
                   onCountryChanged: state.onCountryChanged,
-                  selectorConfig: widget.selectorConfig,
+                  selectorConfig: widget.selectorConfig.copyWith(
+                    selectorType: widget.selectorType,
+                  ),
+                  dropdownIcon: widget.dropdownIcon,
+                  backgroundColor: widget.fillColor,
+                  borderColor: widget.borderColor,
                   selectorTextStyle: widget.selectorTextStyle,
                   searchBoxDecoration: widget.searchBoxDecoration,
                   locale: state.locale,
