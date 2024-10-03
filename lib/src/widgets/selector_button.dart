@@ -17,6 +17,10 @@ class SelectorButton extends StatelessWidget {
   final String? locale;
   final bool isEnabled;
   final bool isScrollControlled;
+  final Widget? suffixIcon;
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final Widget? dropdownIcon;
 
   final ValueChanged<Country?> onCountryChanged;
 
@@ -32,6 +36,10 @@ class SelectorButton extends StatelessWidget {
     required this.onCountryChanged,
     required this.isEnabled,
     required this.isScrollControlled,
+    this.suffixIcon,
+    this.backgroundColor,
+    this.borderColor,
+    this.dropdownIcon,
   }) : super(key: key);
 
   @override
@@ -41,11 +49,10 @@ class SelectorButton extends StatelessWidget {
             ? DropdownButtonHideUnderline(
                 child: DropdownButton<Country>(
                   key: Key(TestHelper.DropdownButtonKeyValue),
+                  padding: EdgeInsets.only(left: 12),
                   hint: Item(
                     country: country,
-                    showFlag: selectorConfig.showFlags,
                     useEmoji: selectorConfig.useEmoji,
-                    leadingPadding: selectorConfig.leadingPadding,
                     trailingSpace: selectorConfig.trailingSpace,
                     textStyle: selectorTextStyle,
                   ),
@@ -56,42 +63,58 @@ class SelectorButton extends StatelessWidget {
               )
             : Item(
                 country: country,
-                showFlag: selectorConfig.showFlags,
                 useEmoji: selectorConfig.useEmoji,
-                leadingPadding: selectorConfig.leadingPadding,
                 trailingSpace: selectorConfig.trailingSpace,
                 textStyle: selectorTextStyle,
               )
-        : MaterialButton(
-            key: Key(TestHelper.DropdownButtonKeyValue),
-            padding: EdgeInsets.zero,
-            minWidth: 0,
-            onPressed: countries.isNotEmpty && countries.length > 1 && isEnabled
-                ? () async {
-                    Country? selected;
-                    if (selectorConfig.selectorType ==
-                        PhoneInputSelectorType.BOTTOM_SHEET) {
-                      selected = await showCountrySelectorBottomSheet(
-                          context, countries);
-                    } else {
-                      selected =
-                          await showCountrySelectorDialog(context, countries);
-                    }
+        : Container(
+            decoration: BoxDecoration(
+              color: backgroundColor ?? Colors.transparent,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: borderColor ?? Colors.transparent,
+              ),
+            ),
+            child: MaterialButton(
+              key: Key(TestHelper.DropdownButtonKeyValue),
+              padding: EdgeInsets.only(left: 12, right: 10),
+              minWidth: 0,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onPressed: countries.isNotEmpty &&
+                      countries.length > 1 &&
+                      isEnabled
+                  ? () async {
+                      Country? selected;
+                      if (selectorConfig.selectorType ==
+                          PhoneInputSelectorType.BOTTOM_SHEET) {
+                        selected = await showCountrySelectorBottomSheet(
+                            context, countries);
+                      } else {
+                        selected =
+                            await showCountrySelectorDialog(context, countries);
+                      }
 
-                    if (selected != null) {
-                      onCountryChanged(selected);
+                      if (selected != null) {
+                        onCountryChanged(selected);
+                      }
                     }
-                  }
-                : null,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Item(
-                country: country,
-                showFlag: selectorConfig.showFlags,
-                useEmoji: selectorConfig.useEmoji,
-                leadingPadding: selectorConfig.leadingPadding,
-                trailingSpace: selectorConfig.trailingSpace,
-                textStyle: selectorTextStyle,
+                  : null,
+              child: Row(
+                children: [
+                  Item(
+                    country: country,
+                    useEmoji: selectorConfig.useEmoji,
+                    trailingSpace: selectorConfig.trailingSpace,
+                    textStyle: selectorTextStyle,
+                  ),
+                  const SizedBox(width: 18),
+                  dropdownIcon ??
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.grey,
+                      ),
+                ],
               ),
             ),
           );
@@ -106,7 +129,6 @@ class SelectorButton extends StatelessWidget {
         child: Item(
           key: Key(TestHelper.countryItemKeyValue(country.alpha2Code)),
           country: country,
-          showFlag: selectorConfig.showFlags,
           useEmoji: selectorConfig.useEmoji,
           textStyle: selectorTextStyle,
           withCountryNames: false,
@@ -130,6 +152,8 @@ class SelectorButton extends StatelessWidget {
             child: CountrySearchListWidget(
               countries,
               locale,
+              suffixIcon,
+              textStyle: selectorTextStyle ?? TextStyle(),
               searchBoxDecoration: searchBoxDecoration,
               showFlags: selectorConfig.showFlags,
               useEmoji: selectorConfig.useEmoji,
@@ -150,9 +174,12 @@ class SelectorButton extends StatelessWidget {
       isScrollControlled: isScrollControlled,
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12), topRight: Radius.circular(12))),
-      useSafeArea: selectorConfig.useBottomSheetSafeArea,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
+        ),
+      ),
+      useSafeArea: true,
       builder: (BuildContext context) {
         return Stack(children: [
           GestureDetector(
@@ -160,7 +187,8 @@ class SelectorButton extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
             child: DraggableScrollableSheet(
               builder: (BuildContext context, ScrollController controller) {
                 return Directionality(
@@ -178,6 +206,8 @@ class SelectorButton extends StatelessWidget {
                     child: CountrySearchListWidget(
                       countries,
                       locale,
+                      suffixIcon,
+                      textStyle: selectorTextStyle ?? TextStyle(),
                       searchBoxDecoration: searchBoxDecoration,
                       scrollController: controller,
                       showFlags: selectorConfig.showFlags,

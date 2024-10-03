@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/src/models/country_model.dart';
 import 'package:intl_phone_number_input/src/utils/test/test_helper.dart';
+import 'package:intl_phone_number_input/src/utils/text_field_widget.dart';
 import 'package:intl_phone_number_input/src/utils/util.dart';
 
 /// Creates a list of Countries with a search textfield.
@@ -12,10 +13,14 @@ class CountrySearchListWidget extends StatefulWidget {
   final bool autoFocus;
   final bool? showFlags;
   final bool? useEmoji;
+  final TextStyle textStyle;
+  final Widget? suffixIcon;
 
   CountrySearchListWidget(
     this.countries,
-    this.locale, {
+    this.locale,
+    this.suffixIcon, {
+    required this.textStyle,
     this.searchBoxDecoration,
     this.scrollController,
     this.showFlags,
@@ -52,7 +57,9 @@ class _CountrySearchListWidgetState extends State<CountrySearchListWidget> {
   /// Returns [InputDecoration] of the search box
   InputDecoration getSearchBoxDecoration() {
     return widget.searchBoxDecoration ??
-        InputDecoration(labelText: 'Search by country name or dial code');
+        InputDecoration(
+          hintText: 'Search by country name or dial code',
+        );
   }
 
   @override
@@ -62,9 +69,15 @@ class _CountrySearchListWidgetState extends State<CountrySearchListWidget> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextFormField(
+          child: TextFieldWidget(
             key: Key(TestHelper.CountrySearchInputKeyValue),
-            decoration: getSearchBoxDecoration(),
+            textStyle: widget.textStyle,
+            suffixIcon: widget.suffixIcon ?? Icon(Icons.search),
+            suffixIconConstraints: BoxConstraints(
+              maxHeight: 32,
+              maxWidth: 32,
+            ),
+            hintText: 'Search by country name or dial code',
             controller: _searchController,
             autofocus: widget.autoFocus,
             onChanged: (value) {

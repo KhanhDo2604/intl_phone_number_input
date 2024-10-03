@@ -10,6 +10,7 @@ import 'package:intl_phone_number_input/src/utils/phone_number.dart';
 import 'package:intl_phone_number_input/src/utils/phone_number/phone_number_util.dart';
 import 'package:intl_phone_number_input/src/utils/selector_config.dart';
 import 'package:intl_phone_number_input/src/utils/test/test_helper.dart';
+import 'package:intl_phone_number_input/src/utils/text_field_widget.dart';
 import 'package:intl_phone_number_input/src/utils/util.dart';
 import 'package:intl_phone_number_input/src/utils/widget_view.dart';
 import 'package:intl_phone_number_input/src/widgets/selector_button.dart';
@@ -80,6 +81,10 @@ class InternationalPhoneNumberInput extends StatefulWidget {
   final TextAlign textAlign;
   final TextAlignVertical textAlignVertical;
   final EdgeInsets scrollPadding;
+  final TextStyle? hintStyle;
+  final double? borderRadius;
+  final Color? borderColor;
+  final Color? fillColor;
 
   final FocusNode? focusNode;
   final Iterable<String>? autofillHints;
@@ -124,6 +129,10 @@ class InternationalPhoneNumberInput extends StatefulWidget {
       this.focusNode,
       this.cursorColor,
       this.autofillHints,
+      this.hintStyle,
+      this.borderRadius,
+      this.borderColor = Colors.grey,
+      this.fillColor,
       this.countries})
       : super(key: key);
 
@@ -286,8 +295,23 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
   InputDecoration getInputDecoration(InputDecoration? decoration) {
     InputDecoration value = decoration ??
         InputDecoration(
-          border: widget.inputBorder ?? UnderlineInputBorder(),
+          filled: true,
+          fillColor: widget.fillColor ?? Colors.grey,
+          border: widget.inputBorder ??
+              OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.0),
+                borderSide: BorderSide(
+                  color: widget.borderColor ?? Colors.grey,
+                ),
+              ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.0),
+            borderSide: BorderSide(
+              color: widget.borderColor ?? Colors.grey,
+            ),
+          ),
           hintText: widget.hintText,
+          hintStyle: widget.hintStyle,
         );
 
     if (widget.selectorConfig.setSelectorButtonAsPrefixIcon) {
@@ -419,26 +443,25 @@ class _InputWidgetView
             SizedBox(width: widget.spaceBetweenSelectorAndTextField),
           ],
           Flexible(
-            child: TextFormField(
+            child: TextFieldWidget(
               key: widget.fieldKey ?? Key(TestHelper.TextInputKeyValue),
-              textDirection: TextDirection.ltr,
               controller: state.controller,
               cursorColor: widget.cursorColor,
               focusNode: widget.focusNode,
               enabled: widget.isEnabled,
+              borderRadius: 8,
+              fillColor: widget.fillColor,
+              hintText: widget.hintText,
               autofocus: widget.autoFocus,
               keyboardType: widget.keyboardType,
               textInputAction: widget.keyboardAction,
-              style: widget.textStyle,
-              decoration: state.getInputDecoration(widget.inputDecoration),
+              textStyle: widget.textStyle ?? TextStyle(),
               textAlign: widget.textAlign,
-              textAlignVertical: widget.textAlignVertical,
               onEditingComplete: widget.onSubmit,
               onFieldSubmitted: widget.onFieldSubmitted,
               autovalidateMode: widget.autoValidateMode,
-              autofillHints: widget.autofillHints,
               validator: widget.validator ?? state.validator,
-              onSaved: state.onSaved,
+              onSaved: () => state.onSaved(state.controller!.text),
               scrollPadding: widget.scrollPadding,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(widget.maxLength),
