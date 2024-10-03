@@ -87,6 +87,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
   final Color? fillColor;
   final PhoneInputSelectorType? selectorType;
   final Widget? dropdownIcon;
+  final Widget? suffixIconForDialog;
 
   final FocusNode? focusNode;
   final Iterable<String>? autofillHints;
@@ -139,6 +140,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
       this.fillColor,
       this.selectorType = PhoneInputSelectorType.DROPDOWN,
       this.dropdownIcon,
+      this.suffixIconForDialog,
       this.countries})
       : super(key: key);
 
@@ -403,6 +405,7 @@ class _InputWidgetView
                   isEnabled: widget.isEnabled,
                   autoFocusSearchField: widget.autoFocusSearch,
                   isScrollControlled: widget.countrySelectorScrollControlled,
+                  suffixIcon: widget.suffixIconForDialog,
                 ),
                 SizedBox(
                   height: state.selectorButtonBottomPadding,
@@ -421,6 +424,8 @@ class _InputWidgetView
               borderRadius: 8,
               fillColor: widget.fillColor,
               hintText: widget.hintText,
+              hintStyle: widget.hintStyle,
+              forcegrey: widget.borderColor,
               autofocus: widget.autoFocus,
               keyboardType: widget.keyboardType,
               textInputAction: widget.keyboardAction,

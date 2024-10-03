@@ -21,6 +21,7 @@ class SelectorButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? borderColor;
   final Widget? dropdownIcon;
+  final TextStyle? hintStyleForSearchBox;
 
   final ValueChanged<Country?> onCountryChanged;
 
@@ -40,6 +41,7 @@ class SelectorButton extends StatelessWidget {
     this.backgroundColor,
     this.borderColor,
     this.dropdownIcon,
+    this.hintStyleForSearchBox,
   }) : super(key: key);
 
   @override
@@ -216,6 +218,9 @@ class SelectorButton extends StatelessWidget {
                       countries,
                       locale,
                       suffixIcon,
+                      fillColorForDialog: backgroundColor,
+                      borderColor: borderColor,
+                      hintStyleForSearchBox: hintStyleForSearchBox,
                       textStyle: selectorTextStyle ?? TextStyle(),
                       searchBoxDecoration: searchBoxDecoration,
                       scrollController: controller,

@@ -15,6 +15,9 @@ class CountrySearchListWidget extends StatefulWidget {
   final bool? useEmoji;
   final TextStyle textStyle;
   final Widget? suffixIcon;
+  final Color? fillColorForDialog;
+  final Color? borderColor;
+  final TextStyle? hintStyleForSearchBox;
 
   CountrySearchListWidget(
     this.countries,
@@ -26,6 +29,9 @@ class CountrySearchListWidget extends StatefulWidget {
     this.showFlags,
     this.useEmoji,
     this.autoFocus = false,
+    this.fillColorForDialog,
+    this.borderColor,
+    this.hintStyleForSearchBox,
   });
 
   @override
@@ -73,10 +79,13 @@ class _CountrySearchListWidgetState extends State<CountrySearchListWidget> {
             key: Key(TestHelper.CountrySearchInputKeyValue),
             textStyle: widget.textStyle,
             suffixIcon: widget.suffixIcon ?? Icon(Icons.search),
+            fillColor: widget.fillColorForDialog,
+            hintStyle: widget.hintStyleForSearchBox,
             suffixIconConstraints: BoxConstraints(
               maxHeight: 32,
               maxWidth: 32,
             ),
+            forcegrey: widget.borderColor,
             hintText: 'Search by country name or dial code',
             controller: _searchController,
             autofocus: widget.autoFocus,
