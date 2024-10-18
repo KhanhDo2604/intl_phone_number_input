@@ -79,17 +79,18 @@ class SelectorButton extends StatelessWidget {
                 textStyle: selectorTextStyle,
               )
         : Container(
-            color: backgroundColor ?? Colors.transparent,
+            decoration: BoxDecoration(
+              color: backgroundColor ?? Colors.transparent,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: borderColor ?? Colors.transparent,
+              ),
+            ),
+            clipBehavior: Clip.antiAlias,
             child: InkWell(
               key: Key(TestHelper.DropdownButtonKeyValue),
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
-              customBorder: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-                side: BorderSide(
-                  color: borderColor ?? Colors.transparent,
-                ),
-              ),
               onTap: countries.isNotEmpty && countries.length > 1 && isEnabled
                   ? () async {
                       Country? selected;
