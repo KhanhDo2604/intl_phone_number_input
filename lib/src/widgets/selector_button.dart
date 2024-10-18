@@ -86,11 +86,13 @@ class SelectorButton extends StatelessWidget {
                 color: borderColor ?? Colors.transparent,
               ),
             ),
+            constraints: BoxConstraints(minHeight: 0),
             child: MaterialButton(
               key: Key(TestHelper.DropdownButtonKeyValue),
               padding:
                   EdgeInsets.only(left: 12, right: 10, bottom: 12, top: 12),
               minWidth: 0,
+              visualDensity: VisualDensity.standard,
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onPressed: countries.isNotEmpty &&
