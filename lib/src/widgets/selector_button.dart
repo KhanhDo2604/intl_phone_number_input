@@ -86,33 +86,33 @@ class SelectorButton extends StatelessWidget {
                 color: borderColor ?? Colors.transparent,
               ),
             ),
-            child: IntrinsicHeight(
-              child: MaterialButton(
-                key: Key(TestHelper.DropdownButtonKeyValue),
-                minWidth: 0,
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                padding:
-                    EdgeInsets.only(left: 12, right: 10, top: 11, bottom: 11),
-                onPressed:
-                    countries.isNotEmpty && countries.length > 1 && isEnabled
-                        ? () async {
-                            Country? selected;
-                            if (selectorConfig.selectorType ==
-                                PhoneInputSelectorType.BOTTOM_SHEET) {
-                              selected = await showCountrySelectorBottomSheet(
-                                  context, countries);
-                            } else {
-                              selected = await showCountrySelectorDialog(
-                                  context, countries);
-                            }
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              key: Key(TestHelper.DropdownButtonKeyValue),
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: countries.isNotEmpty && countries.length > 1 && isEnabled
+                  ? () async {
+                      Country? selected;
+                      if (selectorConfig.selectorType ==
+                          PhoneInputSelectorType.BOTTOM_SHEET) {
+                        selected = await showCountrySelectorBottomSheet(
+                            context, countries);
+                      } else {
+                        selected =
+                            await showCountrySelectorDialog(context, countries);
+                      }
 
-                            if (selected != null) {
-                              onCountryChanged(selected);
-                            }
-                          }
-                        : null,
+                      if (selected != null) {
+                        onCountryChanged(selected);
+                      }
+                    }
+                  : null,
+              child: Padding(
+                padding:
+                    EdgeInsets.only(left: 12, right: 10, top: 12, bottom: 12),
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Item(
                       country: country,
