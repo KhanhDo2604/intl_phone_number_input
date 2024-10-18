@@ -380,80 +380,78 @@ class _InputWidgetView
     final countryCode = state.country?.alpha2Code ?? '';
     final dialCode = state.country?.dialCode ?? '';
 
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          if (!widget.selectorConfig.setSelectorButtonAsPrefixIcon) ...[
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                SelectorButton(
-                  country: state.country,
-                  countries: state.countries,
-                  onCountryChanged: state.onCountryChanged,
-                  selectorConfig: widget.selectorConfig.copyWith(
-                    selectorType: widget.selectorType,
-                  ),
-                  dropdownIcon: widget.dropdownIcon,
-                  backgroundColor: widget.fillColor,
-                  borderColor: widget.borderColor,
-                  selectorTextStyle: widget.selectorTextStyle,
-                  searchBoxDecoration: widget.searchBoxDecoration,
-                  locale: state.locale,
-                  isEnabled: widget.isEnabled,
-                  autoFocusSearchField: widget.autoFocusSearch,
-                  isScrollControlled: widget.countrySelectorScrollControlled,
-                  suffixIcon: widget.suffixIconForDialog,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        if (!widget.selectorConfig.setSelectorButtonAsPrefixIcon) ...[
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SelectorButton(
+                country: state.country,
+                countries: state.countries,
+                onCountryChanged: state.onCountryChanged,
+                selectorConfig: widget.selectorConfig.copyWith(
+                  selectorType: widget.selectorType,
                 ),
-                SizedBox(
-                  height: state.selectorButtonBottomPadding,
-                ),
-              ],
-            ),
-            SizedBox(width: widget.spaceBetweenSelectorAndTextField),
-          ],
-          Flexible(
-            child: TextFieldWidget(
-              key: widget.fieldKey ?? Key(TestHelper.TextInputKeyValue),
-              controller: state.controller,
-              cursorColor: widget.cursorColor,
-              focusNode: widget.focusNode,
-              enabled: widget.isEnabled,
-              borderRadius: 8,
-              fillColor: widget.fillColor,
-              hintText: widget.hintText,
-              hintStyle: widget.hintStyle,
-              forcegrey: widget.borderColor,
-              autofocus: widget.autoFocus,
-              keyboardType: widget.keyboardType,
-              textInputAction: widget.keyboardAction,
-              textStyle: widget.textStyle ?? TextStyle(),
-              textAlign: widget.textAlign,
-              onEditingComplete: widget.onSubmit,
-              onFieldSubmitted: widget.onFieldSubmitted,
-              autovalidateMode: widget.autoValidateMode,
-              validator: widget.validator ?? state.validator,
-              onSaved: () => state.onSaved(state.controller!.text),
-              scrollPadding: widget.scrollPadding,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(widget.maxLength),
-                widget.formatInput
-                    ? AsYouTypeFormatter(
-                        isoCode: countryCode,
-                        dialCode: dialCode,
-                        onInputFormatted: (TextEditingValue value) {
-                          state.controller!.value = value;
-                        },
-                      )
-                    : FilteringTextInputFormatter.digitsOnly,
-              ],
-              onChanged: state.onChanged,
-            ),
-          )
+                dropdownIcon: widget.dropdownIcon,
+                backgroundColor: widget.fillColor,
+                borderColor: widget.borderColor,
+                selectorTextStyle: widget.selectorTextStyle,
+                searchBoxDecoration: widget.searchBoxDecoration,
+                locale: state.locale,
+                isEnabled: widget.isEnabled,
+                autoFocusSearchField: widget.autoFocusSearch,
+                isScrollControlled: widget.countrySelectorScrollControlled,
+                suffixIcon: widget.suffixIconForDialog,
+              ),
+              SizedBox(
+                height: state.selectorButtonBottomPadding,
+              ),
+            ],
+          ),
+          SizedBox(width: widget.spaceBetweenSelectorAndTextField),
         ],
-      ),
+        Flexible(
+          child: TextFieldWidget(
+            key: widget.fieldKey ?? Key(TestHelper.TextInputKeyValue),
+            controller: state.controller,
+            cursorColor: widget.cursorColor,
+            focusNode: widget.focusNode,
+            enabled: widget.isEnabled,
+            borderRadius: 8,
+            fillColor: widget.fillColor,
+            hintText: widget.hintText,
+            hintStyle: widget.hintStyle,
+            forcegrey: widget.borderColor,
+            autofocus: widget.autoFocus,
+            keyboardType: widget.keyboardType,
+            textInputAction: widget.keyboardAction,
+            textStyle: widget.textStyle ?? TextStyle(),
+            textAlign: widget.textAlign,
+            onEditingComplete: widget.onSubmit,
+            onFieldSubmitted: widget.onFieldSubmitted,
+            autovalidateMode: widget.autoValidateMode,
+            validator: widget.validator ?? state.validator,
+            onSaved: () => state.onSaved(state.controller!.text),
+            scrollPadding: widget.scrollPadding,
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(widget.maxLength),
+              widget.formatInput
+                  ? AsYouTypeFormatter(
+                      isoCode: countryCode,
+                      dialCode: dialCode,
+                      onInputFormatted: (TextEditingValue value) {
+                        state.controller!.value = value;
+                      },
+                    )
+                  : FilteringTextInputFormatter.digitsOnly,
+            ],
+            onChanged: state.onChanged,
+          ),
+        )
+      ],
     );
   }
 }

@@ -86,49 +86,49 @@ class SelectorButton extends StatelessWidget {
                 color: borderColor ?? Colors.transparent,
               ),
             ),
-            constraints: BoxConstraints(minHeight: 0),
-            child: MaterialButton(
-              key: Key(TestHelper.DropdownButtonKeyValue),
-              padding:
-                  EdgeInsets.only(left: 12, right: 10, bottom: 12, top: 12),
-              minWidth: 0,
-              visualDensity: VisualDensity.standard,
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onPressed: countries.isNotEmpty &&
-                      countries.length > 1 &&
-                      isEnabled
-                  ? () async {
-                      Country? selected;
-                      if (selectorConfig.selectorType ==
-                          PhoneInputSelectorType.BOTTOM_SHEET) {
-                        selected = await showCountrySelectorBottomSheet(
-                            context, countries);
-                      } else {
-                        selected =
-                            await showCountrySelectorDialog(context, countries);
-                      }
+            child: IntrinsicHeight(
+              child: MaterialButton(
+                key: Key(TestHelper.DropdownButtonKeyValue),
+                padding:
+                    EdgeInsets.only(left: 12, right: 10, bottom: 12, top: 12),
+                minWidth: 0,
+                visualDensity: VisualDensity.compact,
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                onPressed:
+                    countries.isNotEmpty && countries.length > 1 && isEnabled
+                        ? () async {
+                            Country? selected;
+                            if (selectorConfig.selectorType ==
+                                PhoneInputSelectorType.BOTTOM_SHEET) {
+                              selected = await showCountrySelectorBottomSheet(
+                                  context, countries);
+                            } else {
+                              selected = await showCountrySelectorDialog(
+                                  context, countries);
+                            }
 
-                      if (selected != null) {
-                        onCountryChanged(selected);
-                      }
-                    }
-                  : null,
-              child: Row(
-                children: [
-                  Item(
-                    country: country,
-                    useEmoji: selectorConfig.useEmoji,
-                    trailingSpace: selectorConfig.trailingSpace,
-                    textStyle: selectorTextStyle,
-                  ),
-                  const SizedBox(width: 18),
-                  dropdownIcon ??
-                      Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.grey,
-                      ),
-                ],
+                            if (selected != null) {
+                              onCountryChanged(selected);
+                            }
+                          }
+                        : null,
+                child: Row(
+                  children: [
+                    Item(
+                      country: country,
+                      useEmoji: selectorConfig.useEmoji,
+                      trailingSpace: selectorConfig.trailingSpace,
+                      textStyle: selectorTextStyle,
+                    ),
+                    const SizedBox(width: 18),
+                    dropdownIcon ??
+                        Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.grey,
+                        ),
+                  ],
+                ),
               ),
             ),
           );
