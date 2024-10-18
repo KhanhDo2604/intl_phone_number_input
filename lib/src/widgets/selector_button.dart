@@ -92,6 +92,8 @@ class SelectorButton extends StatelessWidget {
                 minWidth: 0,
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
+                padding:
+                    EdgeInsets.only(left: 12, right: 10, top: 11, bottom: 11),
                 onPressed:
                     countries.isNotEmpty && countries.length > 1 && isEnabled
                         ? () async {
@@ -110,25 +112,21 @@ class SelectorButton extends StatelessWidget {
                             }
                           }
                         : null,
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(left: 12, right: 10, bottom: 12, top: 12),
-                  child: Row(
-                    children: [
-                      Item(
-                        country: country,
-                        useEmoji: selectorConfig.useEmoji,
-                        trailingSpace: selectorConfig.trailingSpace,
-                        textStyle: selectorTextStyle,
-                      ),
-                      const SizedBox(width: 18),
-                      dropdownIcon ??
-                          Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.grey,
-                          ),
-                    ],
-                  ),
+                child: Row(
+                  children: [
+                    Item(
+                      country: country,
+                      useEmoji: selectorConfig.useEmoji,
+                      trailingSpace: selectorConfig.trailingSpace,
+                      textStyle: selectorTextStyle,
+                    ),
+                    const SizedBox(width: 18),
+                    dropdownIcon ??
+                        Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.grey,
+                        ),
+                  ],
                 ),
               ),
             ),
